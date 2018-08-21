@@ -2,6 +2,7 @@
 using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Thrives.XrmToolBox.EntityUsage.Model;
@@ -25,6 +26,7 @@ namespace Thrives.XrmToolBox.EntityUsage
 
         private void MyPluginControl_Load(object sender, EventArgs e)
         {
+            
             _usageManager = new EntityUsageManager(Service);
             // Loads or creates the settings for the plugin
             if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
@@ -44,8 +46,8 @@ namespace Thrives.XrmToolBox.EntityUsage
             CloseTool();
         }
 
-       
-       
+
+
 
         /// <summary>
         /// This event occurs when the plugin is closed
@@ -84,7 +86,7 @@ namespace Thrives.XrmToolBox.EntityUsage
                 Message = "Retrieving entities",
                 Work = (worker, args) =>
                 {
-                    
+
                     _usageManager.GetEntities();
                     args.Result = _usageManager.Gridlist;
                 },
@@ -106,14 +108,15 @@ namespace Thrives.XrmToolBox.EntityUsage
 
         private void GetEntityData()
         {
-            ShowInfoNotification("Depending on the number of records this can take a long time!", null, 32);
+
+            ShowInfoNotification("Calculation can take a while depending on entity record size, so sit back and relax!", null);
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "retrieving Entity Records...",
                 Work = (w, e) =>
                 {
-                    int counter=0;
-                    foreach (Model.EntityUsageGridModel elem in  _usageManager.Gridlist)
+                    int counter = 0;
+                    foreach (Model.EntityUsageGridModel elem in _usageManager.Gridlist)
                     {
                         counter++;
                         w.ReportProgress((int)Math.Round((double)(100 * counter) / _usageManager.Gridlist.Count), $"Loading {elem.EntityName}...");
@@ -136,22 +139,37 @@ namespace Thrives.XrmToolBox.EntityUsage
                     if (result != null)
                     {
                         gridEntity.DataSource = result;
-                       
+                        btnXlsxExport.Enabled = true;
                     }
+                    HideNotification();
 
-                    
                 },
                 AsyncArgument = null,
                 // Progress information panel size
                 MessageWidth = 340,
                 MessageHeight = 150
             });
-            HideNotification();
+            
         }
 
         private void btnGetData_Click(object sender, EventArgs e)
         {
             ExecuteMethod(GetEntityData);
+        }
+
+        private void btnXlsxExport_Click(object sender, EventArgs e)
+        {
+            var saveDialog = new SaveFileDialog { Filter = "Excel|*.xlsx" };
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                ExcelManager xlsx = new ExcelManager(_usageManager.Gridlist);
+                xlsx.Save(saveDialog.FileName);
+
+                if (MessageBox.Show(this, "Would you like to open it?", "Information",MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Process.Start(saveDialog.FileName);
+                }
+            }
         }
     }
 }

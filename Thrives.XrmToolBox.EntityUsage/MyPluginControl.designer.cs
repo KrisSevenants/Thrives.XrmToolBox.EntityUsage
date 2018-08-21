@@ -33,8 +33,9 @@
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnInspectEntities = new System.Windows.Forms.ToolStripButton();
-            this.gridEntity = new System.Windows.Forms.DataGridView();
             this.btnGetEntityData = new System.Windows.Forms.ToolStripButton();
+            this.btnXlsxExport = new System.Windows.Forms.ToolStripButton();
+            this.gridEntity = new System.Windows.Forms.DataGridView();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridEntity)).BeginInit();
             this.SuspendLayout();
@@ -46,11 +47,11 @@
             this.tsbClose,
             this.tssSeparator1,
             this.btnInspectEntities,
-            this.btnGetEntityData});
+            this.btnGetEntityData,
+            this.btnXlsxExport});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStripMenu.Size = new System.Drawing.Size(839, 32);
+            this.toolStripMenu.Size = new System.Drawing.Size(559, 25);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
@@ -58,36 +59,22 @@
             // 
             this.tsbClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(59, 29);
+            this.tsbClose.Size = new System.Drawing.Size(40, 22);
             this.tsbClose.Text = "Close";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
             // tssSeparator1
             // 
             this.tssSeparator1.Name = "tssSeparator1";
-            this.tssSeparator1.Size = new System.Drawing.Size(6, 32);
+            this.tssSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // btnInspectEntities
             // 
             this.btnInspectEntities.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.btnInspectEntities.Name = "btnInspectEntities";
-            this.btnInspectEntities.Size = new System.Drawing.Size(134, 29);
+            this.btnInspectEntities.Size = new System.Drawing.Size(90, 22);
             this.btnInspectEntities.Text = "Inspect Entities";
             this.btnInspectEntities.Click += new System.EventHandler(this.btnInspectEntities_Click);
-            // 
-            // gridEntity
-            // 
-            this.gridEntity.AllowUserToAddRows = false;
-            this.gridEntity.AllowUserToDeleteRows = false;
-            this.gridEntity.AllowUserToOrderColumns = true;
-            this.gridEntity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridEntity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridEntity.Location = new System.Drawing.Point(0, 32);
-            this.gridEntity.Name = "gridEntity";
-            this.gridEntity.ReadOnly = true;
-            this.gridEntity.RowTemplate.Height = 28;
-            this.gridEntity.Size = new System.Drawing.Size(839, 430);
-            this.gridEntity.TabIndex = 5;
             // 
             // btnGetEntityData
             // 
@@ -96,21 +83,44 @@
             this.btnGetEntityData.Image = ((System.Drawing.Image)(resources.GetObject("btnGetEntityData.Image")));
             this.btnGetEntityData.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnGetEntityData.Name = "btnGetEntityData";
-            this.btnGetEntityData.Size = new System.Drawing.Size(113, 29);
+            this.btnGetEntityData.Size = new System.Drawing.Size(77, 22);
             this.btnGetEntityData.Text = "Entity Count";
             this.btnGetEntityData.Click += new System.EventHandler(this.btnGetData_Click);
-           
+            // 
+            // btnXlsxExport
+            // 
+            this.btnXlsxExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.btnXlsxExport.Enabled = false;
+            this.btnXlsxExport.Image = ((System.Drawing.Image)(resources.GetObject("btnXlsxExport.Image")));
+            this.btnXlsxExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnXlsxExport.Name = "btnXlsxExport";
+            this.btnXlsxExport.Size = new System.Drawing.Size(44, 22);
+            this.btnXlsxExport.Text = "Export";
+            this.btnXlsxExport.Click += new System.EventHandler(this.btnXlsxExport_Click);
+            // 
+            // gridEntity
+            // 
+            this.gridEntity.AllowUserToAddRows = false;
+            this.gridEntity.AllowUserToDeleteRows = false;
+            this.gridEntity.AllowUserToOrderColumns = true;
+            this.gridEntity.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridEntity.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridEntity.Location = new System.Drawing.Point(0, 25);
+            this.gridEntity.Margin = new System.Windows.Forms.Padding(2);
+            this.gridEntity.Name = "gridEntity";
+            this.gridEntity.ReadOnly = true;
+            this.gridEntity.RowTemplate.Height = 28;
+            this.gridEntity.Size = new System.Drawing.Size(559, 275);
+            this.gridEntity.TabIndex = 5;
             // 
             // MyPluginControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-           
             this.Controls.Add(this.gridEntity);
             this.Controls.Add(this.toolStripMenu);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MyPluginControl";
-            this.Size = new System.Drawing.Size(839, 462);
+            this.Size = new System.Drawing.Size(559, 300);
             this.Load += new System.EventHandler(this.MyPluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
@@ -127,5 +137,6 @@
         private System.Windows.Forms.ToolStripSeparator tssSeparator1;
         private System.Windows.Forms.DataGridView gridEntity;
         private System.Windows.Forms.ToolStripButton btnGetEntityData;
+        private System.Windows.Forms.ToolStripButton btnXlsxExport;
     }
 }
