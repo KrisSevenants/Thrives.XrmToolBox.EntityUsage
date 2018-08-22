@@ -32,11 +32,11 @@
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ddlEntityTypes = new System.Windows.Forms.ToolStripComboBox();
             this.btnInspectEntities = new System.Windows.Forms.ToolStripButton();
             this.btnGetEntityData = new System.Windows.Forms.ToolStripButton();
             this.btnXlsxExport = new System.Windows.Forms.ToolStripButton();
             this.gridEntity = new System.Windows.Forms.DataGridView();
-            this.ddlEntityTypes = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridEntity)).BeginInit();
             this.SuspendLayout();
@@ -70,6 +70,16 @@
             // 
             this.tssSeparator1.Name = "tssSeparator1";
             this.tssSeparator1.Size = new System.Drawing.Size(6, 33);
+            // 
+            // ddlEntityTypes
+            // 
+            this.ddlEntityTypes.AutoCompleteCustomSource.AddRange(new string[] {
+            "All=1",
+            "Custom=2",
+            "Out of the box=3"});
+            this.ddlEntityTypes.DropDownWidth = 300;
+            this.ddlEntityTypes.Name = "ddlEntityTypes";
+            this.ddlEntityTypes.Size = new System.Drawing.Size(300, 33);
             // 
             // btnInspectEntities
             // 
@@ -115,15 +125,6 @@
             this.gridEntity.Size = new System.Drawing.Size(838, 429);
             this.gridEntity.TabIndex = 5;
             this.gridEntity.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridEntity_RowHeaderMouseClick);
-            // 
-            // ddlEntityTypes
-            // 
-            this.ddlEntityTypes.AutoCompleteCustomSource.AddRange(new string[] {
-            "All=1",
-            "Custom=2",
-            "Out of the box=3"});
-            this.ddlEntityTypes.Name = "ddlEntityTypes";
-            this.ddlEntityTypes.Size = new System.Drawing.Size(121, 33);
             // 
             // MyPluginControl
             // 

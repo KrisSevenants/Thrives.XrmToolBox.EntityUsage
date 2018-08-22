@@ -20,6 +20,7 @@ namespace Thrives.XrmToolBox.EntityUsage
 
         public void GetEntities(EntityType entityType, string filterText)
         {
+            string[] filterarray = filterText.Split(';');
             RetrieveAllEntitiesRequest request = new RetrieveAllEntitiesRequest
             {
                 EntityFilters = EntityFilters.Entity
@@ -38,7 +39,7 @@ namespace Thrives.XrmToolBox.EntityUsage
                     _metadataList = metadataItems.EntityMetadata.Where(x => x.IsCustomEntity == false && x.IsValidForAdvancedFind.Value == true);
                     break;
                 case EntityType.Filter:
-                    _metadataList = metadataItems.EntityMetadata.Where(x =>  x.LogicalName.StartsWith(filterText) && x.IsValidForAdvancedFind.Value == true);
+                    _metadataList = metadataItems.EntityMetadata.Where(x => filterarray.Any(f=>x.LogicalName.StartsWith(f)) && x.IsValidForAdvancedFind.Value == true);
                     break;
             }
 
