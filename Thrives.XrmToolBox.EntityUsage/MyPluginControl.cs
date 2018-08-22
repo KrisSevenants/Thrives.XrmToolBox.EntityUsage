@@ -2,6 +2,7 @@
 using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,6 +18,8 @@ namespace Thrives.XrmToolBox.EntityUsage
         private Settings mySettings;
         private EntityUsageManager _usageManager;
         public event EventHandler<StatusBarMessageEventArgs> SendMessageToStatusBar;
+        private int newSortColumn;
+        private ListSortDirection newColumnDirection = ListSortDirection.Ascending;
 
 
         public MyPluginControl()
@@ -28,6 +31,9 @@ namespace Thrives.XrmToolBox.EntityUsage
         {
             
             _usageManager = new EntityUsageManager(Service);
+            ddlEntityTypes.ComboBox.Items.Add(EntityType.All);
+            ddlEntityTypes.ComboBox.Items.Add(EntityType.Custom);
+            ddlEntityTypes.ComboBox.Items.Add(EntityType.OutOfTheBox);
             // Loads or creates the settings for the plugin
             if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
             {
@@ -81,13 +87,16 @@ namespace Thrives.XrmToolBox.EntityUsage
 
         private void GetEntityMetadata()
         {
+            EntityType eType = ddlEntityTypes.ComboBox.SelectedItem != null?(EntityType)Enum.Parse(typeof(EntityType), ddlEntityTypes.ComboBox.Text):EntityType.Filter;
+            string filterText = ddlEntityTypes.ComboBox.Text;
+
             WorkAsync(new WorkAsyncInfo
             {
                 Message = "Retrieving entities",
                 Work = (worker, args) =>
                 {
 
-                    _usageManager.GetEntities();
+                _usageManager.GetEntities(eType,filterText);
                     args.Result = _usageManager.Gridlist;
                 },
                 PostWorkCallBack = (args) =>
@@ -99,7 +108,7 @@ namespace Thrives.XrmToolBox.EntityUsage
                     var result = args.Result as List<Model.EntityUsageGridModel>;
                     if (result != null)
                     {
-                        gridEntity.DataSource = result;
+                        gridEntity.DataSource = new Macchiator.SortableBindingList<EntityUsageGridModel>(result); 
                         btnGetEntityData.Enabled = true;
                     }
                 }
@@ -138,7 +147,7 @@ namespace Thrives.XrmToolBox.EntityUsage
                     var result = args.Result as List<Model.EntityUsageGridModel>;
                     if (result != null)
                     {
-                        gridEntity.DataSource = result;
+                        gridEntity.DataSource = new Macchiator.SortableBindingList<EntityUsageGridModel>(result);
                         btnXlsxExport.Enabled = true;
                     }
                     HideNotification();
@@ -170,6 +179,33 @@ namespace Thrives.XrmToolBox.EntityUsage
                     Process.Start(saveDialog.FileName);
                 }
             }
+        }
+
+        private void gridEntity_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (gridEntity.Columns[e.ColumnIndex].SortMode != DataGridViewColumnSortMode.NotSortable)
+            {
+                if (e.ColumnIndex == newSortColumn)
+                {
+                    if (newColumnDirection == ListSortDirection.Ascending)
+                        newColumnDirection = ListSortDirection.Descending;
+                    else
+                        newColumnDirection = ListSortDirection.Ascending;
+                }
+
+                newSortColumn = e.ColumnIndex;
+
+                switch (newColumnDirection)
+                {
+                    case ListSortDirection.Ascending:
+                        gridEntity.Sort(gridEntity.Columns[newSortColumn], ListSortDirection.Ascending);
+                        break;
+                    case ListSortDirection.Descending:
+                        gridEntity.Sort(gridEntity.Columns[newSortColumn], ListSortDirection.Descending);
+                        break;
+                }
+            }
+
         }
     }
 }
