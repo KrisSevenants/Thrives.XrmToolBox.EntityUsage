@@ -12,6 +12,7 @@ namespace Thrives.XrmToolBox.EntityUsage.Model
     {
         public string EntityName { get; set; }
         public string EntitySchemaName { get; set; }
+        public bool ContainsCustomAttributes { get; set; }
         public int RecordCount { get; set; }
     }
     public static class EntityUsageExtensions

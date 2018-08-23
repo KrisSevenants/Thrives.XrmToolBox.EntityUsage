@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Thrives.XrmToolBox.EntityUsage
 {
-    public enum EntityType { All, Custom, OutOfTheBox,Filter }
+    public enum EntityType { All, Custom, OutOfTheBox, Filter }
     class EntityUsageManager
     {
         private IOrganizationService _service;
@@ -23,7 +23,7 @@ namespace Thrives.XrmToolBox.EntityUsage
             string[] filterarray = filterText.Split(';');
             RetrieveAllEntitiesRequest request = new RetrieveAllEntitiesRequest
             {
-                EntityFilters = EntityFilters.Entity
+                EntityFilters = EntityFilters.Attributes
             };
 
             RetrieveAllEntitiesResponse metadataItems = (RetrieveAllEntitiesResponse)_service.Execute(request);
@@ -39,11 +39,11 @@ namespace Thrives.XrmToolBox.EntityUsage
                     _metadataList = metadataItems.EntityMetadata.Where(x => x.IsCustomEntity == false && x.IsValidForAdvancedFind.Value == true);
                     break;
                 case EntityType.Filter:
-                    _metadataList = metadataItems.EntityMetadata.Where(x => filterarray.Any(f=>x.LogicalName.StartsWith(f)) && x.IsValidForAdvancedFind.Value == true);
+                    _metadataList = metadataItems.EntityMetadata.Where(x => filterarray.Any(f => x.LogicalName.StartsWith(f)) && x.IsValidForAdvancedFind.Value == true);
                     break;
             }
 
-            Gridlist = _metadataList.Select(x => new Model.EntityUsageGridModel { EntityName = x.SchemaName, EntitySchemaName = x.LogicalName }).ToList();
+            Gridlist = _metadataList.Select(x => new Model.EntityUsageGridModel { EntityName = x.SchemaName, EntitySchemaName = x.LogicalName,ContainsCustomAttributes =  x.Attributes.Any(a=>a.IsCustomAttribute == true) }).ToList();
 
         }
 
