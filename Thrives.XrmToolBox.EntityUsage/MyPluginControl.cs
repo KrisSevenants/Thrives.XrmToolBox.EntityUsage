@@ -33,6 +33,7 @@ namespace Thrives.XrmToolBox.EntityUsage
             _usageManager = new EntityUsageManager(Service);
             ddlEntityTypes.ComboBox.Items.Add(EntityType.All);
             ddlEntityTypes.ComboBox.Items.Add(EntityType.Custom);
+            ddlEntityTypes.ComboBox.Items.Add(EntityType.Customizable);
             ddlEntityTypes.ComboBox.Items.Add(EntityType.OutOfTheBox);
             // Loads or creates the settings for the plugin
             if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
@@ -115,7 +116,7 @@ namespace Thrives.XrmToolBox.EntityUsage
             });
         }
 
-        private void GetEntityData()
+        private void GetEntityCount()
         {
 
             ShowInfoNotification("Calculation can take a while depending on entity record size, so sit back and relax!", null);
@@ -136,7 +137,7 @@ namespace Thrives.XrmToolBox.EntityUsage
                 ProgressChanged = e =>
                 {
                     SetWorkingMessage(e.UserState.ToString());
-                    SendMessageToStatusBar?.Invoke(this, new StatusBarMessageEventArgs(e.ProgressPercentage, "Querying data"));
+                    SendMessageToStatusBar?.Invoke(this, new StatusBarMessageEventArgs(e.ProgressPercentage, $"(total: {_usageManager.Gridlist.Count}) Querying data"));
                 },
                 PostWorkCallBack = args =>
                 {
@@ -151,7 +152,7 @@ namespace Thrives.XrmToolBox.EntityUsage
                         btnXlsxExport.Enabled = true;
                     }
                     HideNotification();
-
+                    gridEntity.AutoResizeColumns();
                 },
                 AsyncArgument = null,
                 // Progress information panel size
@@ -163,12 +164,12 @@ namespace Thrives.XrmToolBox.EntityUsage
 
         private void btnGetData_Click(object sender, EventArgs e)
         {
-            ExecuteMethod(GetEntityData);
+            ExecuteMethod(GetEntityCount);
         }
 
         private void btnXlsxExport_Click(object sender, EventArgs e)
         {
-            var saveDialog = new SaveFileDialog { Filter = "Excel|*.xlsx" };
+            var saveDialog = new SaveFileDialog { FileName = $"{ConnectionDetail.OrganizationFriendlyName}_EntityUsage_{DateTime.Now.ToFileTime()}", Filter = "Excel|*.xlsx" };
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 ExcelManager xlsx = new ExcelManager(_usageManager.Gridlist);
@@ -206,6 +207,11 @@ namespace Thrives.XrmToolBox.EntityUsage
                 }
             }
 
+        }
+
+        private void lblByAuthor_DoubleClick(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.thrives.be");
         }
     }
 }

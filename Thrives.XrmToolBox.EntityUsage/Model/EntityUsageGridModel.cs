@@ -10,20 +10,21 @@ namespace Thrives.XrmToolBox.EntityUsage.Model
 {
     public class EntityUsageGridModel
     {
+       
         public string EntityName { get; set; }
         public string EntitySchemaName { get; set; }
         public bool ContainsCustomAttributes { get; set; }
         public int RecordCount { get; set; }
+        public string ErrorMessage { get; set; }
     }
     public static class EntityUsageExtensions
     {
         public static void Count(this EntityUsageGridModel entityUsage, IOrganizationService service)
         {
-
+            try { 
             int totalCount = 0;
 
             QueryExpression query = new QueryExpression(entityUsage.EntitySchemaName);
-            query.ColumnSet = new ColumnSet();
             query.Distinct = true;
             query.ColumnSet = new ColumnSet(false);
             query.PageInfo = new PagingInfo();
@@ -43,7 +44,13 @@ namespace Thrives.XrmToolBox.EntityUsage.Model
             }
 
             entityUsage.RecordCount = totalCount;
-           
+            }
+            catch(Exception ex)
+            {
+                entityUsage.ErrorMessage = ex.Message;
+            }
+
+
         }
     }
 }
