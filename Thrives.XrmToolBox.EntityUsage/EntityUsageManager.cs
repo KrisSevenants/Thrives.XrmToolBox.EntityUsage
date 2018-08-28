@@ -47,7 +47,7 @@ namespace Thrives.XrmToolBox.EntityUsage
                     break;
             }
 
-            Gridlist = _metadataList.Select(x => new Model.EntityUsageGridModel { EntityName = x.SchemaName, EntitySchemaName = x.LogicalName,ContainsCustomAttributes =  x.Attributes.Any(a=>a.IsCustomAttribute == true ) && x.DataSourceId.HasValue == false }).ToList();
+            Gridlist = _metadataList.Select(x => new Model.EntityUsageGridModel { EntityName = x.SchemaName, EntitySchemaName = x.LogicalName,NumberOfCustomAttributes =  x.Attributes.Where(a=>a.IsCustomAttribute == true && x.DataSourceId.HasValue == false).Count()  }).ToList();
 
         }
 
