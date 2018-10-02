@@ -19,6 +19,9 @@ namespace Thrives.XrmToolBox.EntityUsage
             sheet.Cells[1, 1].Value = "EnttiyName";
             sheet.Cells[1, 2].Value = "EntitySchemaName";
             sheet.Cells[1, 3].Value = "RecordCount";
+            sheet.Cells[1, 4].Value = "LastCreated";
+            sheet.Cells[1, 5].Value = "LastModified";
+            sheet.Cells[1, 6].Value = "ErrorMessage";
             AddDataToXlsx();
         }
 
@@ -30,6 +33,9 @@ namespace Thrives.XrmToolBox.EntityUsage
                 sheet.Cells[rowIndex, 1].Value = row.EntityName;
                 sheet.Cells[rowIndex, 2].Value = row.EntitySchemaName;
                 sheet.Cells[rowIndex ,3].Value = row.RecordCount;
+                sheet.Cells[rowIndex, 4].Value = row.LastCreated;
+                sheet.Cells[rowIndex, 5].Value = row.LastModified;
+                sheet.Cells[rowIndex, 6].Value = row.ErrorMessage;
                 rowIndex++;
             } 
         }
